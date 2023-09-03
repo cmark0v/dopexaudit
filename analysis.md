@@ -1,5 +1,6 @@
 Dopex QA report
 ================
+Dr. cmark0v
 
 Methods and materials
 ---------------------
@@ -7,7 +8,7 @@ Methods and materials
 Clone repo; Get errors; fix typos in filenames and scripts; furnish docker containers with build stack and security tools. Run all tests existing tests, flatten all in-scope code, Read code starting with DpxEthToken.sol.  Read docs a little. Focus on RdpxV2Bond.sol and RdpxV2Core.sol and anywhere I see math, authentication, questionable standards or ambiguous quality I give extra effort. Scan with mythril. Work on PoCs using the existing test codebase. Try to pay special attention to the interactions between the contracts and foreign ones, as well as potential misused of libraries. 
 
 background
-++++++++++
+
 
 I have worked on two bond platforms speccing out and writing calculators for emissions, accounting, as well as risk assessment and analysis. I have formal background(PhD) in analysis of numerical methods.
 
@@ -26,8 +27,8 @@ Overview
 --------
 
 
-Auth
-''''
+####Auth
+
 
 1. **The role based authentication is overkill if you don't need multiple reconfigurable role holders then do not have the features for them.** It is just another place for a potential disaster. It is also a waste of gas. It looks suspicious to people reading the code to see who can burn their tokens and things.
 
@@ -38,8 +39,8 @@ Auth
 4. **Pausability** - same as aforementioned emergency administrative withdrawl, eveything can be paused and unpaused at total dsicretion of a singular wallet. Blocking withdrawls for non-admins  
 
 
-Math
-'''''''''''
+####Math
+
 
 1. **Using single point precision** - There is no advantage to this and it is teetering on the edge of manifesting as critical problems see (I, II)
 
@@ -56,8 +57,8 @@ Math
 
 
 
-Tests
-'''''
+####Tests
+
 
 1. **Emaciated set of tests** - maybe it somehoiw has high code line coverage but it does not have execution state space covered
 
@@ -66,8 +67,8 @@ Tests
 3. **no fuzztests** - can cover a lot more ground
 
 
-Governance
-''''''''''
+####Governance
+
 
 1. **unexplained abscence thereof** - no governance specs or code
 
@@ -86,8 +87,8 @@ Governance
 Details, mitigation
 -------------------
 
-Math
-''''
+####Math
+
 
 Most of the themes discussed for the maht above are well addressed by some math guidelines and a few rephrasings of equations.
 
@@ -168,7 +169,7 @@ Here is an expression also with excess operations and bad numerical properties. 
     1e2) / (Math.sqrt(1e18)); // 1e6 precision
 ```
 
-So this comment is inaccurate(not sure what its supposed to mean either, it is inaccurate in several ways). ``\text{reLPFactor} \in \{1,2,3...10^{8}\}``  This is linear dependence, thus the min is at the bountry ``(1*sqrt(1e18)*1e2)/1e9` = 1e2`` which is 2 digits of precision. 
+So this comment is inaccurate(not sure what its supposed to mean either, it is inaccurate in several ways). $\text{reLPFactor} \in \{1,2,3...10^{8}\}$ This is linear dependence, thus the min is at the bountry ``(1*sqrt(1e18)*1e2)/1e9` = 1e2`` which is 2 digits of precision. 
 
 
 
