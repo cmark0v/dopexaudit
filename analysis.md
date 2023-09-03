@@ -131,17 +131,17 @@ $$
 ((\frac{a_B}{2}  r_A) / 10^8) - ((\frac{a_B}{2})  r_A  \epsilon_{slip}) / 10^{16}) 
 $$
 
-sub $$a_B=\text{ammountB} r_A = \text{tokenAPrice}$$ and $$\epsilon_{slip} = \text{slippageTolerance} $$       rearrange and put it back as a float, the form that looks nice 
+sub $$a_B=\frac{\text{ammountB}}{10^{k}}$$ for $k$ decimals in given asset $$ r_A 10^{d} = \text{tokenAPrice}$$ and $$\epsilon_{slip} 10^{d} = \text{slippageTolerance} $$       rearrange and put it back as a float, the form that looks nice 
 
 
 $$
-\frac{1}{2} a_B r_A(1-\epsilon_{slip})
+\frac{1}{2} a_B  r_A(1-\epsilon_{slip})
 $$
 
-change back to ints by multiplying the ratios $$\epsilon_{slip}, r_A$$  by $$1 = \frac{10^d}{10^d}$$
+change back to ints by multiplying the ratios $$\epsilon_{slip} = \frac{\text{slippageTolerance}{10^{d}},  and $$r_A = \frac{\text{tokenAPrice}{10^{d}}$$  sub $$1 = $$
 
 $$
-\frac{ a_B r_A 10^d}{2 \cdot 10^{d}}\left(1-\epsilon_{slip} \frac{10^d}{10^d} \right) = \frac{a_B r_A }{2 10^{2d}}(10^d-\frac{\epsilon_{slip}}{10^2d})
+\frac{ a_B \text{tokenAPrice}}{2 \cdot 10^{d}}\left(\frac{10^d}{10^d}- \frac{\text{slippageTolerance}{10^d} \right) = \frac{a_B \text{tokenAPrice} }{2 }(10^d-\frac{\epsilon_{slip}}{10^2d})
 $$
 
 Now back in terms of $$d=8$$, we do all the multiply first then divide), and double check seeing that slippage tolerance is always less than 1e8, so we get 
