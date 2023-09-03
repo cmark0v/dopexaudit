@@ -141,7 +141,7 @@ $$
 change back to ints by multiplying the ratios $$\epsilon_{slip} = \frac{\text{slippageTolerance}}{10^{d}},  and $$r_A = \frac{\text{tokenAPrice}}{10^{d}}$$  sub $$1 = \frac{10^d}{10^d}$$
 
 $$
-\frac{ a_B \text{tokenAPrice}}{2 \cdot 10^{d}}\left(\frac{10^d}{10^d}- \frac{\text{slippageTolerance}}{10^d} \right) = \frac{a_B \text{tokenAPrice} }{2 \cdot 10^d }(10^d-\frac{\text{slippageTolerance}}{10^d})
+\frac{ a_B \text{tokenAPrice}}{2 \cdot 10^{d}}\left(\frac{10^d}{10^d}- \frac{\text{slippageTolerance}}{10^d} \right) = \frac{a_B \text{tokenAPrice} }{2 \cdot 10^{2d} }(10^d-\frac{\text{slippageTolerance}}{})
 $$
 
 Now back in terms of $$d=8$$, we do all the multiply first then divide), and double check seeing that slippage tolerance is always less than 1e8, so we get 
