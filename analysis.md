@@ -124,10 +124,10 @@ This optimizes gas and improves accuracy. Resolving a potential issue
 
 to $0.5\text{ammountB}\cdot\text{tokenAPrice}\cdot(1- \text{slippageTolerance})$ which is shorter, less ops, and has better computational properties in tis case 
 
-sub $a_B=\text{ammountB}$ and  $r_A 10^{d} = \text{tokenAPrice}$ and $\epsilon_{slip} 10^{d} = \text{slippageTolerance}$  
+sub $a_B=\text{ammountB}$ and  $r_A  = \text{tokenAPrice}$ and $\epsilon_{slip}  = \text{slippageTolerance}$  
 
 $$
-((\frac{a_B}{2} 10^8 r_A) / 10^8) - ((\frac{a_B}{2})  r_A 10^{16} \epsilon_{slip}) / 10^{16}) 
+((\frac{a_B}{2} r_A) / 10^8) - ((\frac{a_B}{2})  r_A \epsilon_{slip}) / 10^{16})  = \frac{a_B r_A}{2 \cdot 10^8}  (1 - \frac{ \epsilon_{slip}} { 10^8}})   
 $$
 
 rearrange and put it back as a float, the form that looks nice 
