@@ -114,8 +114,7 @@ Most of the themes discussed for the maht above are well addressed by some math 
 ----------------------------------------------------------------
 
 
- Here i will include the work that belongs to gas optimizations i had. We are arranging  closer 
-
+This optimizes gas and improves accuracy. Resolving a potential issue
 
 ```solidity 
     //ReLPContract.sol:277
@@ -124,27 +123,27 @@ Most of the themes discussed for the maht above are well addressed by some math 
     (((amountB / 2) * tokenAInfo.tokenAPrice * slippageTolerance) / 1e16);
 ```
 
-to $$0.5\text{ammountB}\cdot\text{tokenAPrice}\cdot(1- \text{slippageTolerance})$$ which is shorter, less ops, and has better computational properties in tis case 
+to $0.5\text{ammountB}\cdot\text{tokenAPrice}\cdot(1- \text{slippageTolerance})$ which is shorter, less ops, and has better computational properties in tis case 
 
 
 $$
 ((\frac{a_B}{2}  r_A) / 10^8) - ((\frac{a_B}{2})  r_A  \epsilon_{slip}) / 10^{16}) 
 $$
 
-sub $$a_B=\frac{\text{ammountB}}{10^{k}}$$ for $k$ decimals in given asset $$ r_A 10^{d} = \text{tokenAPrice}$$ and $$\epsilon_{slip} 10^{d} = \text{slippageTolerance} $$       rearrange and put it back as a float, the form that looks nice 
+sub $a_B=\text{ammountB}$ for $k$ decimals in given asset $ r_A 10^{d} = \text{tokenAPrice}$ and $\epsilon_{slip} 10^{d} = \text{slippageTolerance} $       rearrange and put it back as a float, the form that looks nice 
 
 
 $$
 \frac{1}{2} a_B  r_A(1-\epsilon_{slip})
 $$
 
-change back to ints by multiplying the ratios $$\epsilon_{slip} = \frac{\text{slippageTolerance}}{10^{d}},  and $$r_A = \frac{\text{tokenAPrice}}{10^{d}}$$  sub $$1 = \frac{10^d}{10^d}$$
+change back to ints by multiplying the ratios $\epsilon_{slip} = \frac{\text{slippageTolerance}}{10^{d}},  and $r_A = \frac{\text{tokenAPrice}}{10^{d}}$  sub $1 = \frac{10^d}{10^d}$
 
 $$
 \frac{ a_B \text{tokenAPrice}}{2 \cdot 10^{d}}\left(\frac{10^d}{10^d}- \frac{\text{slippageTolerance}}{10^d} \right) = \frac{a_B \text{tokenAPrice} }{2 \cdot 10^{2d} }(10^d-\frac{\text{slippageTolerance}}{})
 $$
 
-Now back in terms of $$d=8$$, we do all the multiply first then divide), and double check seeing that slippage tolerance is always less than 1e8, so we get 
+Now back in terms of $d=8$, we do all the multiply first then divide), and double check seeing that slippage tolerance is always less than 1e8, so we get 
 
 
 ```solidity
@@ -153,7 +152,7 @@ Now back in terms of $$d=8$$, we do all the multiply first then divide), and dou
 
 ```
 
-4 operations now, rather than 8. minimum value $$\text{tokenA} \approx 2.01 \cdot 10^8$$
+4 operations now, rather than 8. minimum value $\text{tokenA} \approx 2.01 \cdot 10^8$
 
 
 ----------------------------------------------------------------
