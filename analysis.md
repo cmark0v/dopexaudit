@@ -127,7 +127,7 @@ to $$0.5\text{ammountB}\cdot\text{tokenAPrice}\cdot(1- \text{slippageTolerance})
 
 
 $$
-(((a_B / 2) * r_A) / 10^8) - (((a_B / 2) * r_A * \epsilon_{slip}) / 10^16) 
+((\frac{a_B}{2}  r_A) / 10^8) - ((\frac{a_B}{2})  r_A  \epsilon_{slip}) / 10^{16}) 
 $$
 
 sub $$a_B=\text{ammountB} r_A = \text{tokenAPrice}$$ and $$\epsilon_{slip} = \text{slippageTolerance} $$       rearrange and put it back as a float, the form that looks nice 
@@ -178,8 +178,8 @@ If the token is Tether then we are in that case we are at ``1e5/1e9 -> 0`` if ``
 
 
 
-Auth/Gov
-''''''''
+####Auth/Gov
+
 
 
 
