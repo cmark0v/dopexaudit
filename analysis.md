@@ -13,13 +13,12 @@ Clone repo; Get errors; fix typos in filenames and scripts; furnish docker conta
 I have worked on two bond platforms speccing out and writing calculators for emissions, accounting, as well as risk assessment and analysis. I have formal background(PhD) in analysis of numerical methods.
 
 
+**impression of code**
+
 - Anemic set of tests. Emaciated. 
 - bad commenting standards, inaccuracies and incoherent  natspec. 
-- no governance system( a wallet with multisig is not a governance system)
-- excessive unilateral administrative powers
+- autocratic single wallet dictatorship system of governance
 - signs of a struggle(with math)
-- lack of protection from abuse by administrators
-- opaque 
 
 
 
