@@ -7,7 +7,7 @@ Methods and materials
 
 Clone repo; Get errors; fix typos in filenames and scripts; furnish docker containers with build stack and security tools. Run all tests existing tests, flatten all in-scope code, Read code starting with DpxEthToken.sol.  Read docs a little. Focus on RdpxV2Bond.sol and RdpxV2Core.sol and anywhere I see math, authentication, questionable standards or ambiguous quality I give extra effort. Scan with mythril. Work on PoCs using the existing test codebase. Try to pay special attention to the interactions between the contracts and foreign ones, as well as potential misused of libraries. 
 
-background
+**background**
 
 
 I have worked on two bond platforms speccing out and writing calculators for emissions, accounting, as well as risk assessment and analysis. I have formal background(PhD) in analysis of numerical methods.
@@ -27,7 +27,7 @@ Overview
 --------
 
 
-####Auth
+**Auth**
 
 
 1. **The role based authentication is overkill if you don't need multiple reconfigurable role holders then do not have the features for them.** It is just another place for a potential disaster. It is also a waste of gas. It looks suspicious to people reading the code to see who can burn their tokens and things.
@@ -39,7 +39,7 @@ Overview
 4. **Pausability** - same as aforementioned emergency administrative withdrawl, eveything can be paused and unpaused at total dsicretion of a singular wallet. Blocking withdrawls for non-admins  
 
 
-####Math
+**Math**
 
 
 1. **Using single point precision** - There is no advantage to this and it is teetering on the edge of manifesting as critical problems see (I, II)
@@ -57,7 +57,7 @@ Overview
 
 
 
-####Tests
+**Tests**
 
 
 1. **Emaciated set of tests** - maybe it somehoiw has high code line coverage but it does not have execution state space covered
@@ -67,7 +67,7 @@ Overview
 3. **no fuzztests** - can cover a lot more ground
 
 
-####Governance
+**Governance**
 
 
 1. **unexplained abscence thereof** - no governance specs or code
@@ -87,7 +87,7 @@ Overview
 Details, mitigation
 -------------------
 
-####Math
+**Math**
 
 
 Most of the themes discussed for the maht above are well addressed by some math guidelines and a few rephrasings of equations.
@@ -141,7 +141,7 @@ $$
 change back to ints by multiplying the ratios $$\epsilon_{slip}, r_A$$  by $$1 = \frac{10^d}{10^d}$$
 
 $$
-\frac{ a_B r_A 10^d}{2 10^{2d}}\left(10^d-\epsilon_{slip} 10^d\right) = \frac{a_B r_A 10^d}{2 10^{2d}}(10^d-\epsilon_{slip}10^d)
+\frac{ a_B r_A 10^d}{2 \cdot 10^{d}}\left(1-\epsilon_{slip} \frac{10^d}{10^d} \right) = \frac{a_B r_A }{2 10^{2d}}(10^d-\frac{\epsilon_{slip}}{10^2d})
 $$
 
 Now back in terms of $$d=8$$, we do all the multiply first then divide), and double check seeing that slippage tolerance is always less than 1e8, so we get 
