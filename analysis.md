@@ -1,14 +1,13 @@
-#Dopex QA report
+Dopex QA report
 ================
 
 Methods and materials
------------------------
+---------------------
 
 Clone repo; Get errors; fix typos in filenames and scripts; furnish docker containers with build stack and security tools. Run all tests existing tests, flatten all in-scope code, Read code starting with DpxEthToken.sol.  Read docs a little. Focus on RdpxV2Bond.sol and RdpxV2Core.sol and anywhere I see math, authentication, questionable standards or ambiguous quality I give extra effort. Scan with mythril. Work on PoCs using the existing test codebase. Try to pay special attention to the interactions between the contracts and foreign ones, as well as potential misused of libraries. 
 
 background
-'''''''''''
-+++++++++++++
+++++++++++
 
 I have worked on two bond platforms speccing out and writing calculators for emissions, accounting, as well as risk assessment and analysis. I have formal background(PhD) in analysis of numerical methods.
 
@@ -28,7 +27,7 @@ Overview
 
 
 Auth
-'''''''''''
+''''
 
 1. **The role based authentication is overkill if you don't need multiple reconfigurable role holders then do not have the features for them.** It is just another place for a potential disaster. It is also a waste of gas. It looks suspicious to people reading the code to see who can burn their tokens and things.
 
@@ -58,7 +57,7 @@ Math
 
 
 Tests
-'''''''''''
+'''''
 
 1. **Emaciated set of tests** - maybe it somehoiw has high code line coverage but it does not have execution state space covered
 
@@ -68,7 +67,7 @@ Tests
 
 
 Governance
-'''''''''''
+''''''''''
 
 1. **unexplained abscence thereof** - no governance specs or code
 
@@ -131,17 +130,17 @@ $$
 (((a_B / 2) * r_A) / 10^8) - (((a_B / 2) * r_A * \epsilon_{slip}) / 10^16) 
 $$
 
-sub $$a_B=\text{ammountB} \r_A = \text{tokenAPrice}$$ and $$\epsilon_{slip} = \text{slippageTolerance} $$       rearrange and put it back as a float, the form that looks nice 
+sub $$a_B=\text{ammountB} r_A = \text{tokenAPrice}$$ and $$\epsilon_{slip} = \text{slippageTolerance} $$       rearrange and put it back as a float, the form that looks nice 
 
 
 $$
 \frac{1}{2} a_B r_A(1-\epsilon_{slip})
 $$
 
-change back to ints by multiplying the ratios $$\epsilon_{slip}, 1,r_A$$  by $$1 = \frac{10^d}{10^d}$$
+change back to ints by multiplying the ratios $$\epsilon_{slip}, r_A$$  by $$1 = \frac{10^d}{10^d}$$
 
 $$
-\frac{ a_B r_A 10^d}{2 10^{2d}}{10^d-\epsilon_{slip} 10^d) = \frac{a_B r_A 10^d}(10^d-\epsilon_{slip}10^d}{2 10^{2d}}
+\frac{ a_B r_A 10^d}{2 10^{2d}}\left(10^d-\epsilon_{slip} 10^d\right) = \frac{a_B r_A 10^d}{2 10^{2d}}(10^d-\epsilon_{slip}10^d)
 $$
 
 Now back in terms of $$d=8$$, we do all the multiply first then divide), and double check seeing that slippage tolerance is always less than 1e8, so we get 
@@ -173,14 +172,14 @@ So this comment is inaccurate(not sure what its supposed to mean either, it is i
 
 
 
-If the token is Tether then we are in that case we are at ``1e5/1e9 -> 0`` if ``\text{reLPFactor}`` is in the range ``1e8`` then we are getting 4 to 5 digits of precision
+If the token is Tether then we are in that case we are at ``1e5/1e9 -> 0`` if ``reLPFactor`` is in the range ``1e8`` then we are getting 4 to 5 digits of precision
 
 
 
 
 
 Auth/Gov
-'''''''''
+''''''''
 
 
 
