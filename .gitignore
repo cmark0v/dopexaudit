@@ -1,0 +1,7 @@
+*.swp
+oldopex/
+bob*
+config*
+.env
+**/.env
+codequoter
