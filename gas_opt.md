@@ -1,11 +1,10 @@
+#gas report
+
+*Dr. c mark0v*
 
 
 
 
-
-## Math
-
-### bad numerics
 
 ####[G-01] Magic square root gas death
 
@@ -20,7 +19,6 @@
 ```
 
 should be
-
 
 ```solidity
 // File: contracts/reLP/ReLPContract.sol
