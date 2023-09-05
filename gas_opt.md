@@ -21,7 +21,7 @@ Line 273
 this can be rewritten, resulting in higher accuracy and less operations
 
 $$
-\frac{\text{amountB \cdot \text{tokenAPrice}}{2 10^{8}} * (10^8 - \frac{\text{slippageTolerance} }{10^8)
+\frac{\text{amountB} \cdot \text{tokenAPrice}}{2 10^{8}} * (10^8 - \frac{\text{slippageTolerance} }{10^8)
 $$
 
 
