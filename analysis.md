@@ -7,10 +7,7 @@ Aug/Sept 2023
 
 ## Methods and materials
 
-Clone repo; Get errors; fix typos in filenames and scripts; furnish docker containers with build stack and security tools. Run all existing tests, flatten all in-scope code, Read code starting with ```DpxEthToken.sol```.  Read docs a little. Focus on ```RdpxV2Bond.sol``` and ```RdpxV2Core.sol``` and anywhere I see math, authentication, questionable standards or ambiguous quality I give extra effort. Scan with `mythril`. Work on PoCs using the existing test codebase. Try to pay special attention to the interactions between the contracts and foreign ones, as well as potential misuse of libraries. 
-
-
-The author is heavily conditioned by and a fully inducted member of the ancient cult of western mathematics. 
+Clone repo; Get errors; fix typos in filenames and scripts; furnish docker containers with build stack and security tools. Run all existing tests, flatten all in-scope code, Read code starting with ``DpxEthToken.sol``.  Read docs a little. Focus on ``RdpxV2Bond.sol`` and ``RdpxV2Core.sol`` and anywhere I see math, authentication, questionable standards or ambiguous quality I give extra effort. Scan with `mythril`. Work on PoCs using the existing test codebase. Try to pay special attention to the interactions between the contracts and foreign ones, as well as potential misuse of libraries. 
 
 
 
