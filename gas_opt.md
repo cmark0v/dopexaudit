@@ -29,9 +29,10 @@ should be
 230       ) / 1e7; 
 ```
 
-To remove mistyping of inaccurate comment(it is inacurate and typo/math mistake simultaneously) and to remove insanity that a highschool algebra class would fix on that last line. Maybe the compiler is good enough to do this in some case. 
 
- $\text{reLPFactor} \in \{1,2,3...10^{8}\}$ This is linear dependence, thus the min is at the bountry $(1*sqrt(1e18)*1e2)/1e9` = 1e2$ which is 2 digits of precision. In reality it is going to be $\textsc{floor}(log_{10}(\text{reLPFactor}) + 2 )$ digits
+The call to the external library to evaluate a constant. also the comment is inaccurate
+
+ $\text{reLPFactor} \in \{1,2,3...10^{8}\}$ This is linear dependence, thus the min is at the bountry $(\sqrt(10^{18}) \cdot 10^{2})/10^{9} = 10^{2}$ which is 2 digits of precision. In reality it is going to be $\text{floor}(\log_{10}(\text{reLPFactor}) + 2 )$ digits
 
 
 
@@ -86,6 +87,10 @@ to save ops as before
 272     // calculate min amount of tokenA to be received
 273     mintokenAAmount = (amountB*tokenAInfo.tokenAPrice)*(1e8-slippageTolerance))/2e16
 ```
+
+
+we know ``1e8 - slippageTolerance`` is positive due to ``1e8`` being our maximum 
+
 
 #### [G-03] Unnecessary error messages
 
