@@ -1,4 +1,4 @@
-#gas report
+# gas report
 
 *Dr. c mark0v*
 
@@ -6,7 +6,7 @@
 
 
 
-####[G-01] Magic square root gas death
+#### [G-01] Magic square root gas death
 
 
 ```solidity
@@ -62,7 +62,7 @@ to save ops as before
 
 
 
-#### [G-02] 
+#### [G-02]  
 
 
 
@@ -86,22 +86,6 @@ to save ops as before
 272     // calculate min amount of tokenA to be received
 273     mintokenAAmount = (amountB*tokenAInfo.tokenAPrice)*(1e8-slippageTolerance))/2e16
 ```
-
-
-This can be done in less ops too 
-
-```solidity
-// File: contracts/reLP/ReLPContract.sol
-// Lines: 231-235
-
-231 
-232     uint256 tokenAToRemove = ((((_amount * 4) * 1e18) /
-233       tokenAInfo.tokenAReserve) *
-234       tokenAInfo.tokenALpReserve *
-235       baseReLpRatio) / (1e18 * DEFAULT_PRECISION * 1e2);
-```
-
-
 
 #### [G-03] Unnecessary error messages
 
@@ -176,5 +160,20 @@ Reduce the contract size by storing that string "must be greater than 0" as byte
 Or use ordinated error table like in some other contracts here. Or dont use one. This is is an administrative function so not ones ever going to see it. 
 
 #### [G-04]
+
+
+This can be done in less ops too. It is one ugly expression
+
+```solidity
+// File: contracts/reLP/ReLPContract.sol
+// Lines: 231-235
+
+231 
+232     uint256 tokenAToRemove = ((((_amount * 4) * 1e18) /
+233       tokenAInfo.tokenAReserve) *
+234       tokenAInfo.tokenALpReserve *
+235       baseReLpRatio) / (1e18 * DEFAULT_PRECISION * 1e2);
+```
+
 
 
