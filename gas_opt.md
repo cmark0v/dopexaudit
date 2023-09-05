@@ -9,6 +9,7 @@
 #### [G-01] Magic square root gas death
 
 
+[[https://github.com/code-423n4/2023-08-dopex/blob/main/contracts/reLP/ReLPContract.sol#L228]]
 ```solidity
 // File: contracts/reLP/ReLPContract.sol
 // Lines: 228-230
@@ -32,14 +33,12 @@ should be
 
 The call to the external library to evaluate a constant. also the comment is inaccurate
 
- $\text{reLPFactor} \in \{1,2,3...10^{8}\}$ This is linear dependence, thus the min is at the bountry $(\sqrt(10^{18}) \cdot 10^{2})/10^{9} = 10^{2}$ which is 2 digits of precision. In reality it is going to be $\text{floor}(\log_{10}(\text{reLPFactor}) + 2 )$ digits
+ $\text{reLPFactor} \in \{1,2,3...10^{8}\}$ This is linear dependence, thus the min is at the bountry $(\sqrt(10^{18}) \cdot 10^{2})/10^{9} = 10^{2}$ which is 2 digits of precision. In reality it is going to be $\text{floor}(\log_{10}(\text{reLPFactor})) + 2 $ digits
 
 
 
 
-
-Also here:
-
+[[https://github.com/code-423n4/2023-08-dopex/blob/main/contracts/core/RdpxV2Core.sol#L1163]]
 ```solidity
 // File: contracts/core/RdpxV2Core.sol
 // Lines: 1163-1165
@@ -48,7 +47,6 @@ Also here:
 1164         Math.sqrt(IRdpxReserve(addresses.rdpxReserve).rdpxReserve()) *
 1165         1e2) / (Math.sqrt(1e18)); // 1e8 precision
 ```
-
 
 is 
 
@@ -67,17 +65,15 @@ to save ops as before
 
 
 
+[[https://github.com/code-423n4/2023-08-dopex/blob/main/contracts/reLP/ReLPContract.sol#L273]]
 ```solidity
 // File: contracts/reLP/ReLPContract.sol
-// Lines: 272-275
+// Lines: 273-275
 
-272     // calculate min amount of tokenA to be received
 273     mintokenAAmount =
 274       (((amountB / 2) * tokenAInfo.tokenAPrice) / 1e8) -
 275       (((amountB / 2) * tokenAInfo.tokenAPrice * slippageTolerance) / 1e16);
 ```
-
-
 
 
 ```solidity
@@ -97,6 +93,7 @@ we know ``1e8 - slippageTolerance`` is positive due to ``1e8`` being our maximum
 This is not a user-callable function, therefore it shouldnt need a lengthy error message like this
 
 
+[[https://github.com/code-423n4/2023-08-dopex/blob/main/contracts/core/RdpxV2Core.sol#L240]]
 ```solidity
 // File: contracts/core/RdpxV2Core.sol
 // Lines: 240-244
@@ -107,10 +104,10 @@ This is not a user-callable function, therefore it shouldnt need a lengthy error
 243   ) external onlyRole(DEFAULT_ADMIN_ROLE) {
 244     require(_asset != address(0), "RdpxV2Core: asset cannot be 0 address");
 ```
-
 Another example, 
 
  
+[[https://github.com/code-423n4/2023-08-dopex/blob/main/contracts/reLP/ReLPContract.sol#L90]]
 ```solidity
 // File: contracts/reLP/ReLPContract.sol
 // Lines: 90-99
@@ -129,6 +126,7 @@ Another example,
 
 Two more in that file.
 
+[[https://github.com/code-423n4/2023-08-dopex/blob/main/contracts/reLP/ReLPContract.sol#L171]]
 ```solidity
 // File: contracts/reLP/ReLPContract.sol
 // Lines: 171-194
@@ -159,7 +157,6 @@ Two more in that file.
 194   }
 ```
 
-
 Reduce the contract size by storing that string "must be greater than 0" as bytes and combine at runtime using ``encodePacked()``
 
 Or use ordinated error table like in some other contracts here. Or dont use one. This is is an administrative function so not ones ever going to see it. 
@@ -167,8 +164,9 @@ Or use ordinated error table like in some other contracts here. Or dont use one.
 #### [G-04]
 
 
-This can be done in less ops too. It is one ugly expression
+This can be done in less ops too. I dont have enough time but It needs a massage
 
+[[https://github.com/code-423n4/2023-08-dopex/blob/main/contracts/reLP/ReLPContract.sol#L231]]
 ```solidity
 // File: contracts/reLP/ReLPContract.sol
 // Lines: 231-235
@@ -179,6 +177,5 @@ This can be done in less ops too. It is one ugly expression
 234       tokenAInfo.tokenALpReserve *
 235       baseReLpRatio) / (1e18 * DEFAULT_PRECISION * 1e2);
 ```
-
 
 
