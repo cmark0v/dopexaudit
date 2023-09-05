@@ -10,9 +10,6 @@ Aug/Sept 2023
 Clone repo; Get errors; fix typos in filenames and scripts; furnish docker containers with build stack and security tools. Run all existing tests, flatten all in-scope code, Read code starting with ```DpxEthToken.sol```.  Read docs a little. Focus on ```RdpxV2Bond.sol``` and ```RdpxV2Core.sol``` and anywhere I see math, authentication, questionable standards or ambiguous quality I give extra effort. Scan with `mythril`. Work on PoCs using the existing test codebase. Try to pay special attention to the interactions between the contracts and foreign ones, as well as potential misuse of libraries. 
 
 
-The author is heavily conditioned by and a fully inducted member of the ancient cult of western mathematics. 
-
-
 
 ## Overview
 
@@ -30,6 +27,8 @@ First impressions of the code, and docs, qualititative in nature:
 - absence of implemented/codified governance  
 - unused code features from libraries, meaning increased attack surface without feature gains
 - 'we have docs at home' -mom 
+- bad commenting standards, inaccuracies and incoherent  natspec. 
+- autocratic single wallet dictatorship system of governance
 
 
 
@@ -123,6 +122,64 @@ Put the work in your docs preferably so it can be checked efficiently. The more 
 Division and multiplication are the same operation(with different elements) on the real numbers but division and multiplication are not the same operation in these sets of integers. Neither is subtraction the same operation as addition. If you are thinking in terms of algebraic structures formed by closed operations on a set. 
 
 
+This optimizes gas and improves accuracy. Resolving a potential issue
+
+```solidity 
+    //ReLPContract.sol:277
+    mintokenAAmount =
+    (((amountB / 2) * tokenAInfo.tokenAPrice) / 1e8) -
+    (((amountB / 2) * tokenAInfo.tokenAPrice * slippageTolerance) / 1e16);
+```
+
+to $0.5\text{ammountB}\cdot\text{tokenAPrice}\cdot(1- \text{slippageTolerance})$ which is shorter, less ops, and has better computational properties in tis case 
+
+sub $a_B=\text{ammountB}$ and  $r_A  = \text{tokenAPrice}$ and $\epsilon_{slip}  = \text{slippageTolerance}$  
+
+$$
+((\frac{a_B}{2} r_A) / 10^8) - ((\frac{a_B}{2})  r_A \epsilon_{slip}) / 10^{16})  = \frac{a_B r_A}{2 \cdot 10^8}  (1 - \frac{ \epsilon_{slip}} { 10^8}})   
+$$
+
+rearrange and put it back as a float, the form that looks nice 
+
+
+$$
+\frac{1}{2} a_B  r_A(1-\frac{\epsilon_{slip}}{10^d})
+$$
+
+change back to ints by sub $\epsilon_{slip} = \frac{\text{slippageTolerance}}{10^{d}},  and $r_A = \frac{\text{tokenAPrice}}{10^{d}}$  sub $1 = \frac{10^d}{10^d}$
+
+$$
+\frac{ a_B \text{tokenAPrice}}{2 \cdot 10^{d}}\left(\frac{10^d}{10^d}- \frac{\text{slippageTolerance}}{10^{2d}} \right) = \frac{a_B \text{tokenAPrice} }{2 \cdot 10^{2d} }(10^d-\frac{\text{slippageTolerance}}{10^d})
+$$
+
+Now back in terms of $d=8$, we do all the multiply first then divide), and double check seeing that slippage tolerance is always less than 1e8, so we get 
+
+
+```solidity
+
+    (amountB*tokenAInfo.tokenAPrice*(1e8-slippageTolerance))/2e16
+
+```
+
+4 operations now, rather than 8. minimum value $\text{tokenA} \approx 2.01 \cdot 10^8$
+
+
+----------------------------------------------------------------
+
+
+**bad numerics**
+
+Here is an expression also with excess operations and bad numerical properties. The denominator evaluates analytically to ``1e9`` which makes the expression ``(reLPFactor*sqrt(tokenAReserve))/1e7``. 
+
+```solidity   //// ReLPContract.sol 228
+    uint256 baseReLpRatio = (reLPFactor *
+    Math.sqrt(tokenAInfo.tokenAReserve) *
+    1e2) / (Math.sqrt(1e18)); // 1e6 precision
+```
+
+So this comment is inaccurate(not sure what its supposed to mean either, it is inaccurate in several ways). $\text{reLPFactor} \in \{1,2,3...10^{8}\}$ This is linear dependence, thus the min is at the bountry ``(1*sqrt(1e18)*1e2)/1e9` = 1e2`` which is 2 digits of precision. 
+
+
 
 ### Auth/Gov
 
@@ -130,6 +187,7 @@ Division and multiplication are the same operation(with different elements) on t
 
 
 1. Role based auth system The wallet launching the contracts ``RdpxDecayingBonds.sol``, ``RdpxV2Bond.sol``, ``RdpxV2Core.sol``, ``RdpxV2Core.sol``, ``ReLPContract.sol``, ``UniV2LiquidityAMO.sol``, ``UniV3LiquidityAMO.sol`` is grated ``DEFAULT_ADMIN_ROLE``, which can be used to unilaterally drain all funds, pause contracts, grant other permissions to mint and burn, etc. This is by no means necessary from a technical perspective and exposes the team to unnecessary risk and potential liabilities. If it is a multisig that is still an opaque mechanism that involves trusting a group of people who know eachother and have like interests. 
+
 
 
 These things should be controlled through a governance contract with transparent, well documented, verified procedure for any serious administrative events. Multiple parties with transparent incentives to operate with the protocol's best interest in mind. When it is launched, the governance contract address is supplied in the transaction and never has to be done through separate manual processes. 
